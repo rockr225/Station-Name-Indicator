@@ -1,0 +1,81 @@
+// include the library code:
+#include <LiquidCrystal.h>
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// set up a constant for the tilt switchPin
+const int switchPin = 7;
+
+int hits = 0;
+int thor=1000;
+int hulk=2000;
+int boss=3000;
+// variable to hold the value of the switchPin
+int switchState = 0;
+
+// variable to hold previous value of the switchpin
+int prevSwitchState = 0;
+
+void setup() {  
+  // set up the number of columns and rows on the LCD 
+  lcd.begin(16, 2);
+
+  // set up the switch pin as an input
+  pinMode(switchPin,INPUT);
+  pinMode(13,OUTPUT);
+pinMode(8,OUTPUT);
+pinMode(9,OUTPUT);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("sensor is ready");
+  lcd.setCursor(0, 1);
+  lcd.print("plz ON motor");
+}
+
+void loop() {  
+  // check the status of the switch
+  switchState = digitalRead(switchPin);
+
+  // compare the switchState to its previous state
+  if (switchState != prevSwitchState) {
+    if (switchState == LOW) {
+      hits = hits + 1;
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      //lcd.print("Ghaziabad:");
+      lcd.print(hits);
+     
+      lcd.setCursor(0, 1);
+      //lcd.print("Hapur:");
+      lcd.print(hits);
+      //}   
+      if(hits >= thor)
+      {
+        digitalWrite(13, HIGH);
+       lcd.clear();
+      lcd.setCursor(0, 0);
+      //lcd.print("Hapur:");
+       lcd.print(hits);
+      lcd.setCursor(0, 1);
+      //lcd.print("Marut:");
+      lcd.print(hits);
+      }
+      if(hits >= hulk)
+      {
+        digitalWrite(8, HIGH);
+        digitalWrite(9, LOW);
+      lcd.setCursor(0, 0);
+      //lcd.print("Marut:");
+      lcd.print(hits);
+      lcd.setCursor(0, 1);
+      //lcd.print("haridwar:");
+      lcd.print(hits);
+      }
+      }
+    }
+  
+  
+  // save the current switch state as the last state 
+  prevSwitchState = switchState;
+}
